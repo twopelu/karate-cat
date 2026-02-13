@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: 'Press Start 2P', monospace;
+  background: #1a1230;
+  color: #f5f1ff;
+}
+.hidden { display: none !important; }
+.app {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+}
