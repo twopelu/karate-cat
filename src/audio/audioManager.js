@@ -57,29 +57,73 @@ export class AudioManager {
 
   startBgm() {
     if (!this.isReady || this.bgmOsc) return;
-    const osc = this.ctx.createOscillator();
-    const lfo = this.ctx.createOscillator();
-    const lfoGain = this.ctx.createGain();
-    const bgmGain = this.ctx.createGain();
-    osc.type = 'square';
-    osc.frequency.value = 180;
-    lfo.type = 'triangle';
-    lfo.frequency.value = 2;
-    lfoGain.gain.value = 12;
-    bgmGain.gain.value = 0.05;
-    lfo.connect(lfoGain);
-    lfoGain.connect(osc.frequency);
-    osc.connect(bgmGain);
-    bgmGain.connect(this.master);
-    osc.start();
-    lfo.start();
-    this.bgmOsc = { osc, lfo, bgmGain };
+    const leadOsc = this.ctx.createOscillator();
+    const bassOsc = this.ctx.createOscillator();
+    const leadGain = this.ctx.createGain();
+    const bassGain = this.ctx.createGain();
+
+    leadOsc.type = 'square';
+    bassOsc.type = 'triangle';
+    leadGain.gain.value = 0;
+    bassGain.gain.value = 0;
+
+    leadOsc.connect(leadGain);
+    bassOsc.connect(bassGain);
+    leadGain.connect(this.master);
+    bassGain.connect(this.master);
+
+    // Pentatonic / minor-flavored loop inspired by classic arcade fighters.
+    const leadPattern = [
+      523.25, 587.33, 659.25, 783.99,
+      659.25, 587.33, 523.25, 493.88,
+      523.25, 587.33, 659.25, 698.46,
+      783.99, 659.25, 587.33, 523.25,
+    ];
+    const bassPattern = [
+      130.81, 130.81, 146.83, 146.83,
+      164.81, 164.81, 146.83, 146.83,
+      130.81, 130.81, 146.83, 146.83,
+      196.00, 196.00, 174.61, 174.61,
+    ];
+
+    const stepLength = 0.16;
+    let step = 0;
+    leadOsc.start();
+    bassOsc.start();
+
+    const tick = () => {
+      if (!this.bgmOsc) return;
+
+      const now = this.ctx.currentTime;
+      const leadFreq = leadPattern[step % leadPattern.length];
+      const bassFreq = bassPattern[step % bassPattern.length];
+
+      leadOsc.frequency.setValueAtTime(leadFreq, now);
+      bassOsc.frequency.setValueAtTime(bassFreq, now);
+
+      leadGain.gain.cancelScheduledValues(now);
+      leadGain.gain.setValueAtTime(0.0001, now);
+      leadGain.gain.linearRampToValueAtTime(0.05, now + 0.01);
+      leadGain.gain.exponentialRampToValueAtTime(0.0001, now + stepLength * 0.9);
+
+      bassGain.gain.cancelScheduledValues(now);
+      bassGain.gain.setValueAtTime(0.0001, now);
+      bassGain.gain.linearRampToValueAtTime(0.03, now + 0.01);
+      bassGain.gain.exponentialRampToValueAtTime(0.0001, now + stepLength * 0.95);
+
+      step += 1;
+    };
+
+    tick();
+    const interval = setInterval(tick, stepLength * 1000);
+    this.bgmOsc = { leadOsc, bassOsc, leadGain, bassGain, interval };
   }
 
   stopBgm() {
     if (!this.bgmOsc) return;
-    this.bgmOsc.osc.stop();
-    this.bgmOsc.lfo.stop();
+    clearInterval(this.bgmOsc.interval);
+    this.bgmOsc.leadOsc.stop();
+    this.bgmOsc.bassOsc.stop();
     this.bgmOsc = null;
   }
 
