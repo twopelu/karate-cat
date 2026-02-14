@@ -5,7 +5,7 @@ import { resolveRound } from './rules.js';
 import { createCountdown } from './timer.js';
 import { renderHud } from '../ui/hud.js';
 import { renderControls } from '../ui/controls.js';
-import { animateResolve } from '../ui/animations.js';
+import { animateMoves, animateResolve, clearFighterAnimations } from '../ui/animations.js';
 import { switchScreen } from '../ui/screens.js';
 import { t } from '../i18n/index.js';
 
@@ -82,6 +82,7 @@ export class GameEngine {
     resetMatch(this.state);
     this.state.muted = this.audio.muted;
     switchScreen(this.root, 'menu');
+    clearFighterAnimations(this.playerFighterEl, this.cpuFighterEl);
     this.render();
   }
 
@@ -97,6 +98,7 @@ export class GameEngine {
   startRound() {
     resetRound(this.state);
     this.state.gameState = GAME_STATES.COUNTDOWN;
+    clearFighterAnimations(this.playerFighterEl, this.cpuFighterEl);
     this.render();
 
     this.stopCountdown = createCountdown(
@@ -125,6 +127,7 @@ export class GameEngine {
       this.state.messageKey = 'status.locked';
     }
     this.render();
+    animateMoves(this.playerFighterEl, this.cpuFighterEl, this.state.playerMove, this.state.cpuMove);
     setTimeout(() => this.resolveActions(), 180);
   }
 
