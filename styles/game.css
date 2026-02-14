@@ -43,15 +43,84 @@
 
 .fighter { text-align: center; }
 .cat {
-  width: 120px;
-  height: 120px;
+  width: 132px;
+  height: 132px;
   margin: 0 auto;
   image-rendering: pixelated;
   border: 4px solid #000;
-  background: repeating-linear-gradient(45deg, #efefef 0 8px, #ddd 8px 16px);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffeecf 0 100%);
 }
-.cat-player { background: repeating-linear-gradient(45deg, #f2f2f2 0 8px, #c9f7ff 8px 16px); }
-.cat-cpu { background: repeating-linear-gradient(45deg, #ffd2da 0 8px, #ff9ab2 8px 16px); }
+
+.cat::before,
+.cat::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  left: 24px;
+  top: 14px;
+}
+
+.cat::before {
+  background: #111;
+  box-shadow: var(--cat-sprite);
+}
+
+.cat::after {
+  background: transparent;
+  box-shadow: var(--costume-sprite);
+}
+
+.cat-player {
+  background: linear-gradient(180deg, #d5f0ff 0 62%, #a8dd8f 62% 100%);
+  --cat-sprite:
+    /* ears */
+    14px 0 #111, 35px 0 #111,
+    7px 7px #111, 14px 7px #f8dfc5, 21px 7px #f8dfc5, 28px 7px #f8dfc5, 35px 7px #f8dfc5, 42px 7px #111,
+    /* head */
+    0 14px #111, 7px 14px #f8dfc5, 14px 14px #f8dfc5, 21px 14px #f8dfc5, 28px 14px #f8dfc5, 35px 14px #f8dfc5, 42px 14px #f8dfc5, 49px 14px #111,
+    0 21px #111, 7px 21px #f8dfc5, 14px 21px #111, 21px 21px #f8dfc5, 28px 21px #111, 35px 21px #f8dfc5, 42px 21px #f8dfc5, 49px 21px #111,
+    0 28px #111, 7px 28px #f8dfc5, 14px 28px #f8dfc5, 21px 28px #f3a0a6, 28px 28px #f8dfc5, 35px 28px #f8dfc5, 42px 28px #f8dfc5, 49px 28px #111,
+    7px 35px #111, 14px 35px #f8dfc5, 21px 35px #f8dfc5, 28px 35px #f8dfc5, 35px 35px #f8dfc5, 42px 35px #111,
+    /* torso + paws */
+    14px 42px #111, 21px 42px #f8dfc5, 28px 42px #f8dfc5, 35px 42px #111,
+    7px 49px #111, 14px 49px #2f63d8, 21px 49px #f8dfc5, 28px 49px #2f63d8, 35px 49px #2f63d8, 42px 49px #111,
+    0 56px #111, 7px 56px #2f63d8, 14px 56px #2f63d8, 21px 56px #fff, 28px 56px #fff, 35px 56px #2f63d8, 42px 56px #2f63d8, 49px 56px #111,
+    7px 63px #111, 14px 63px #f8dfc5, 21px 63px #2f63d8, 28px 63px #2f63d8, 35px 63px #f8dfc5, 42px 63px #111,
+    7px 70px #111, 14px 70px #f8dfc5, 21px 70px #111, 28px 70px #111, 35px 70px #f8dfc5, 42px 70px #111;
+  --costume-sprite:
+    /* heroic mask + chest insignia */
+    7px 14px #2f63d8, 14px 14px #2f63d8, 21px 14px #ffd95d, 28px 14px #ffd95d, 35px 14px #2f63d8, 42px 14px #2f63d8,
+    21px 49px #d63f4f, 28px 49px #d63f4f,
+    14px 56px #d63f4f, 21px 56px #d63f4f, 28px 56px #d63f4f, 35px 56px #d63f4f;
+}
+
+.cat-cpu {
+  background: linear-gradient(180deg, #e2d7f4 0 62%, #9f88b8 62% 100%);
+  --cat-sprite:
+    /* ears */
+    14px 0 #111, 35px 0 #111,
+    7px 7px #111, 14px 7px #5a4568, 21px 7px #5a4568, 28px 7px #5a4568, 35px 7px #5a4568, 42px 7px #111,
+    /* head */
+    0 14px #111, 7px 14px #5a4568, 14px 14px #5a4568, 21px 14px #5a4568, 28px 14px #5a4568, 35px 14px #5a4568, 42px 14px #5a4568, 49px 14px #111,
+    0 21px #111, 7px 21px #5a4568, 14px 21px #111, 21px 21px #ff4f63, 28px 21px #111, 35px 21px #5a4568, 42px 21px #5a4568, 49px 21px #111,
+    0 28px #111, 7px 28px #5a4568, 14px 28px #5a4568, 21px 28px #d39191, 28px 28px #5a4568, 35px 28px #5a4568, 42px 28px #5a4568, 49px 28px #111,
+    7px 35px #111, 14px 35px #5a4568, 21px 35px #5a4568, 28px 35px #5a4568, 35px 35px #5a4568, 42px 35px #111,
+    /* torso + paws */
+    14px 42px #111, 21px 42px #5a4568, 28px 42px #5a4568, 35px 42px #111,
+    7px 49px #111, 14px 49px #2b2431, 21px 49px #5a4568, 28px 49px #2b2431, 35px 49px #2b2431, 42px 49px #111,
+    0 56px #111, 7px 56px #2b2431, 14px 56px #2b2431, 21px 56px #111, 28px 56px #111, 35px 56px #2b2431, 42px 56px #2b2431, 49px 56px #111,
+    7px 63px #111, 14px 63px #5a4568, 21px 63px #2b2431, 28px 63px #2b2431, 35px 63px #5a4568, 42px 63px #111,
+    7px 70px #111, 14px 70px #5a4568, 21px 70px #111, 28px 70px #111, 35px 70px #5a4568, 42px 70px #111;
+  --costume-sprite:
+    /* hood + comic scar + red sash */
+    7px 14px #2b2431, 14px 14px #2b2431, 35px 14px #2b2431, 42px 14px #2b2431,
+    35px 21px #ff4f63, 42px 28px #ff4f63,
+    14px 56px #ff4f63, 21px 56px #ff4f63, 28px 56px #ff4f63, 35px 56px #ff4f63;
+}
+
 .move-label { min-height: 1rem; font-size: .65rem; }
 .overlay { text-align: center; min-width: 100px; }
 .countdown { font-size: 2.2rem; color: var(--accent); }
@@ -65,6 +134,58 @@
 
 .btn-move.selected {
   outline: 3px solid var(--ok);
+}
+
+
+.fighter.move-punch .cat {
+  animation: cat-punch 220ms steps(2, end) 2;
+}
+
+.fighter.move-kick .cat {
+  animation: cat-kick 260ms steps(2, end) 2;
+}
+
+.fighter.move-block .cat {
+  animation: cat-block 220ms steps(2, end) 2;
+}
+
+@keyframes cat-punch {
+  0% { transform: translateX(0) translateY(0) scale(1); }
+  50% { transform: translateX(9px) translateY(-2px) scale(1.04); }
+  100% { transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes cat-kick {
+  0% { transform: translateX(0) translateY(0) scale(1); }
+  50% { transform: translateX(11px) translateY(-8px) scale(1.06); }
+  100% { transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes cat-block {
+  0% { transform: translateX(0) scale(1); filter: saturate(1); }
+  50% { transform: translateX(-4px) scale(0.97); filter: saturate(1.3) brightness(1.05); }
+  100% { transform: translateX(0) scale(1); filter: saturate(1); }
+}
+
+
+.fighter-cpu.move-punch .cat {
+  animation-name: cat-punch-cpu;
+}
+
+.fighter-cpu.move-kick .cat {
+  animation-name: cat-kick-cpu;
+}
+
+@keyframes cat-punch-cpu {
+  0% { transform: translateX(0) translateY(0) scale(1); }
+  50% { transform: translateX(-9px) translateY(-2px) scale(1.04); }
+  100% { transform: translateX(0) translateY(0) scale(1); }
+}
+
+@keyframes cat-kick-cpu {
+  0% { transform: translateX(0) translateY(0) scale(1); }
+  50% { transform: translateX(-11px) translateY(-8px) scale(1.06); }
+  100% { transform: translateX(0) translateY(0) scale(1); }
 }
 
 .fighter.attack .cat { transform: translateY(-6px) scale(1.03); }
